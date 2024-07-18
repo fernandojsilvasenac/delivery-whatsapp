@@ -1,9 +1,11 @@
 import { View, Text } from "react-native";
+import { Header } from "@/components/header";
 
 export default function Home(){
     return(
-        <View className="flex-1 items-center justify-center">
-            <Text className="text-white text-2xl font-heading">Delivery Lanches</Text>
+        <View>
+            <Header title="Faça seu Pedido" />
+            <Header title="Sua sacolinha"/>
         </View>
         )
 }
