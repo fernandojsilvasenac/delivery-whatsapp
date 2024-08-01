@@ -1,7 +1,7 @@
 import { View, Text, Image } from "react-native";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation, Redirect } from "expo-router";
 
-import { PRODUCTS } from "@/utils/data/products";
+import * as products from "@/utils/data/products";
 import { useCartStore } from "@/store/cart-store";
 
 import { LinkButton } from "@/components/link-button";
@@ -17,8 +17,8 @@ export default function Product(){
     const { id } = useLocalSearchParams()
 
     // Filtrar produto
-    const product = PRODUCTS.filter((item) => item.id === id)[0]
-
+    // const product = PRODUCTS.filter((item) => item.id === id)[0]
+    const product = products.PRODUCTS.find( (item) => item.id === id)
 
     function handleAddToCart(){
         if (product) {
@@ -27,7 +27,9 @@ export default function Product(){
         }
     }
 
-    console.log(cartStore.products)
+    if(!product) {
+        return <Redirect href='/' />
+    }
 
     return(
         <View className="flex-1 mt-5">
