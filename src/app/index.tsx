@@ -34,7 +34,7 @@ export default function Home(){
 
     return(
         <View>
-            <Header title="Faça seu Pedido" cartQuantityItems={1} />
+            <Header title="Faça seu Pedido" cartQuantityItems={cartQuantityItems} />
             <FlatList
                 data={CATEGORIES}
                 keyExtractor={(item) => item}
