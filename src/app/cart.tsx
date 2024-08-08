@@ -1,4 +1,7 @@
-import { View, Text, ScrollView, Alert } from "react-native";
+import { useState } from 'react'
+import { useNavigation } from 'expo-router';
+
+import { View, Text, ScrollView, Alert, Linking } from "react-native";
 
 import { Header } from "@/components/header";
 import { Product } from "@/components/product";
@@ -11,8 +14,12 @@ import { Feather } from "@expo/vector-icons";
 import { formatCurrency } from "@/utils/functions/format-currency";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+const PHONE_NUMBER = '5519999999999'
+
 export default function Cart(){
+    const [address, setAddress] = useState('')
     const cartStore = useCartStore()
+    const navigation = useNavigation()
 
     const isProducts = cartStore.products.length > 0
 
@@ -32,7 +39,38 @@ export default function Cart(){
             }
         ])
     }
-            
+         
+    function handleOrder(){
+        
+        if (address.trim().length === 0){
+            return Alert.alert('Pedido', 'Informe os dados da entrega')
+        }
+
+        const products = cartStore.products
+            .map(product => `\n ${product.quantity}x ${product.title}` )
+            .join('')
+
+        const message = `
+        🍔NOVO PEDIDO🍟
+            \n Entregar em ${address}
+
+            ${products}
+
+            \n Valor total: ${total}
+
+        `
+        // console.log(message);
+
+        Linking.openURL(
+         `http://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${message}`   
+        )
+        
+        cartStore.clear()
+        navigation.goBack()
+
+    }
+
+
     return(
         <View className="flex-1 pt-8">
             <Header title="Minha Sacolinha"/>
@@ -59,12 +97,18 @@ export default function Cart(){
                     <Text className="text-lime-400 text-2xl font-heading">{total}</Text>
                 </View>
                 <Input placeholder="Informe o endereço de entrega com rua,
-                bairro, CEP, número e complemento..."/>
+                    bairro, CEP, número e complemento..."
+                    onChangeText={setAddress}
+                    // mudanças do botão do teclado do celular
+                    blurOnSubmit={true} // permite a teclar <enter> do teclado enviar o pedido
+                    onSubmitEditing={handleOrder} // quando teclar enter chamar a funcao
+                    returnKeyType='next' // mudando o ícone do teclado
+                />
             </View>                
             </ScrollView>
             </KeyboardAwareScrollView>
             <View className="p-5 gap-5">
-                <Button onPress={() => {}}>
+                <Button onPress={handleOrder}>
                     <Button.Text>Enviar Pedido</Button.Text>
                     <Button.Icon>
                         <Feather name="arrow-right-circle" size={20} />
