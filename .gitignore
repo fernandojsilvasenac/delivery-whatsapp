@@ -2,7 +2,7 @@
 
 # dependencies
 node_modules/
-
+stripe-backend/node_modules/
 # Expo
 .expo/
 dist/
@@ -30,6 +30,8 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
+stripe-backend/.env
 
 # typescript
 *.tsbuildinfo

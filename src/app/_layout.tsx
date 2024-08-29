@@ -1,6 +1,7 @@
 import { SafeAreaView } from 'react-native'
 import { Loading } from '@/components/loading'
 import { Slot } from 'expo-router'
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 import {
     useFonts,
@@ -23,9 +24,13 @@ export default function Layout(){
     }
 
     return (
-        <SafeAreaView className="flex-1 bg-slate-900">
-            <Slot></Slot>
-        </SafeAreaView>
+        <StripeProvider
+            publishableKey={process.env.STRIPE_PUBLIC_KEY || ''}
+        >
+            <SafeAreaView className="flex-1 bg-slate-900">
+                <Slot></Slot>
+            </SafeAreaView>
+        </StripeProvider>
     )
 
 }
