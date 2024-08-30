@@ -17,6 +17,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.post('/payment-intent', async (req, res) =>{
+    console.log(req.body);
     try{
         const { amount } = req.body
 

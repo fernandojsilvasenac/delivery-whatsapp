@@ -65,8 +65,9 @@ export default function Cart(){
         const isInitialized = await initializePaymentSheet();
 
         if (isInitialized) {
-            await openPaymentSheet();
+             await openPaymentSheet();
         }
+        
         // Linking.openURL(
         //  `http://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${message}`   
         // )
@@ -81,6 +82,7 @@ export default function Cart(){
                 (total, product) => total + product.price * product.quantity, 0
             ) * 100
         );
+        console.log(amountInCents)
         try{
             const response = await fetch('http://localhost:3000/payment-intent', {
                 method:'POST',
@@ -112,11 +114,36 @@ export default function Cart(){
                 return false;
             }
 
-        } catch (error) {
+            const { error } = await initPaymentSheet({
+                paymentIntentClientSecret: clientSecret,
+                merchantDisplayName: 'Delivery Whatsapp',
+                returnURL:'/',
+            })
 
+            if (error){
+                console.error('Error initializing payment sheet: ', error);
+                return false;
+            }
+
+            return true;
+
+        } catch (error) {
+            console.error('Error in initializePaymentSheet: ', error)
         }
     }
 
+    async function openPaymentSheet(){
+        const { error } = await presentPaymentSheet();
+
+        if (error) {
+            Alert.alert(`Error code: ${error.code}`, error.message)
+        } else {
+            Alert.alert('Successo', 'Seu pedido foi confirmado!')
+        }
+
+        // navigation.goBack()
+
+    }
 
 
     return(
