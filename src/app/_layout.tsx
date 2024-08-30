@@ -25,7 +25,7 @@ export default function Layout(){
     if(!fontsLoaded){
         return <Loading />
     }
-    const STRIPE_PUBLIC_KEY='pk_test_51O4XjoCYBBZmPQEINuJV13MqHeVjvQUiMq1MmCVL9Xz3AaCVSRtJ2QWX3deq4FNPzKHtP8Uyt4PygVQcTGACC9oM00NxuYWWfx'
+    
     // const fetchPublishableKey = async () => {
     //     const key = await process.env.STRIPE_PUBLIC_KEY || ''; // fetch key from your server here
     //     console.log(key)
@@ -37,7 +37,7 @@ export default function Layout(){
     //   }, []);
 
     return (
-        <StripeProvider publishableKey={STRIPE_PUBLIC_KEY || ''}>
+        <StripeProvider publishableKey={process.env.STRIPE_PUBLIC_KEY || ''}>
             <SafeAreaView className="flex-1 bg-slate-900">
                 <Slot></Slot>
             </SafeAreaView>
