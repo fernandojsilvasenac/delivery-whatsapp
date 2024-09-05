@@ -84,7 +84,7 @@ export default function Cart(){
         );
         console.log(amountInCents)
         try{
-            const response = await fetch('http://localhost:3000/payment-intent', {
+            const response = await fetch('http://10.53.52.45:3000/payment-intent', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -117,7 +117,7 @@ export default function Cart(){
             const { error } = await initPaymentSheet({
                 paymentIntentClientSecret: clientSecret,
                 merchantDisplayName: 'Delivery Whatsapp',
-                returnURL:'/',
+                returnURL:'myapp://home',
             })
 
             if (error){
@@ -138,10 +138,10 @@ export default function Cart(){
         if (error) {
             Alert.alert(`Error code: ${error.code}`, error.message)
         } else {
-            Alert.alert('Successo', 'Seu pedido foi confirmado!')
+            Alert.alert('Successo', 'Seu pedido/pagamento foi confirmado!')
         }
-
-        // navigation.goBack()
+        cartStore.clear()
+        navigation.goBack()
 
     }
 

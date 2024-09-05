@@ -2,7 +2,8 @@ import { SafeAreaView } from 'react-native'
 import { Loading } from '@/components/loading'
 import { Slot } from 'expo-router'
 import { StripeProvider } from '@stripe/stripe-react-native';
-import { useEffect, useState } from 'react';
+import Constants from 'expo-constants';
+import { StatusBar } from 'expo-status-bar';
 
 import {
     useFonts,
@@ -13,7 +14,6 @@ import {
 } from '@expo-google-fonts/inter'
 
 export default function Layout(){
-    // const [publishableKey, setPublishableKey] = useState('');
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -22,23 +22,17 @@ export default function Layout(){
         Inter_700Bold
     })
 
+    const stripePublicKey = Constants.expoConfig?.extra?.stripePublicKey;
+    console.log(stripePublicKey)
     if(!fontsLoaded){
         return <Loading />
     }
     
-    // const fetchPublishableKey = async () => {
-    //     const key = await process.env.STRIPE_PUBLIC_KEY || ''; // fetch key from your server here
-    //     console.log(key)
-    //     setPublishableKey(key);
-    // };
-    
-    //   useEffect(() => {
-    //     fetchPublishableKey();
-    //   }, []);
 
     return (
-        <StripeProvider publishableKey={process.env.STRIPE_PUBLIC_KEY || ''}>
+        <StripeProvider publishableKey={stripePublicKey}>
             <SafeAreaView className="flex-1 bg-slate-900">
+                <StatusBar backgroundColor='white' translucent/>
                 <Slot></Slot>
             </SafeAreaView>
         </StripeProvider>

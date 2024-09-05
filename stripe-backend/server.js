@@ -41,5 +41,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Servidor Stripe ...rodando em http://localhost:${port}`);
+    console.log(`Servidor Stripe ...rodando em http://127.0.0.1:${port}`);
 });
